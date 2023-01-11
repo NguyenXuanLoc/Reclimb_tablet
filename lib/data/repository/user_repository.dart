@@ -202,9 +202,12 @@ class UserRepository extends BaseService {
   Future<ApiResult> getRouteDetailAno(String routeId) async =>
       GET('route/public/$routeId');
 
-  Future<ApiResult> getUserProfile(int userId) async =>
-      await GET('kuser/profile/$userId');
+  Future<ApiResult> getUserProfile(int userId, {String? accessToken}) async =>
+      await GET('kuser/profile/$userId', accessToken: accessToken);
 
   Future<ApiResult> getAllHoldSet() async =>
       await GET('hold?start=1&count=100');
+
+  Future<ApiResult> getRouteForUserLoginWall(String token) async =>
+      await GET('favourite?start=1&count=5', accessToken: token);
 }

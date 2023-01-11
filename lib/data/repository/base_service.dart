@@ -20,13 +20,13 @@ class BaseService {
 
   // ignore: non_constant_identifier_names
   Future<ApiResult> GET(String url,
-      {Map<String, dynamic>? queryParam, bool isNewFormat = false}) async {
+      {Map<String, dynamic>? queryParam, bool isNewFormat = false,String? accessToken}) async {
     if (await ConnectionUtils.isConnect() == false) {
       return ApiResult(error: LocaleKeys.network_error.tr());
     }
     print('============================================================');
     print('[GET] ${baseUrl}$url');
-    print("Bearer ${globals.accessToken}");
+    print("Bearer ${accessToken ?? globals.accessToken}");
 
     try {
       final response = await Dio()
@@ -35,7 +35,7 @@ class BaseService {
             queryParameters: queryParam,
             options: Options(
               headers: {
-                'Authorization': 'Bearer ${globals.accessToken}',
+                'Authorization': 'Bearer ${accessToken ?? globals.accessToken}',
                 // 'Content-Type': 'application/json',
               },
               sendTimeout: timeOut,

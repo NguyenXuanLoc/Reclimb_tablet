@@ -17,7 +17,7 @@ class DeviceUtils {
     } else if (Platform.isIOS) {
       var iosInfo = await deviceInfo.iosInfo;
       global.deviceModel = iosInfo.localizedModel.toString();
-      global.deviceName = iosInfo.systemName.toString();
+      global.deviceName = iosInfo.name.toString();
       global.deviceId = iosInfo.identifierForVendor.toString();
     }
   }

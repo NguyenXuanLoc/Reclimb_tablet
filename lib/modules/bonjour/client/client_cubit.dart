@@ -11,6 +11,9 @@ class ClientCubit extends Cubit<ClientState> {
   late BonsoirBroadcast broadcast;
 
   ClientCubit() : super(ClientState(false)) {
+  }
+
+  void loginOnClick(BuildContext context) async {
     service = BonsoirService(
         name: globals.deviceId,
         type: ConstantKey.CLIMBER_SERVICE,
@@ -19,12 +22,10 @@ class ClientCubit extends Cubit<ClientState> {
           ApiKey.device_id: globals.deviceId,
           ApiKey.device_model: globals.deviceModel,
           ApiKey.device_name: globals.deviceName,
-          ApiKey.token: globals.accessToken
+          ApiKey.token: globals.accessToken,
+          ApiKey.user_id: globals.userId.toString()
         });
     broadcast = BonsoirBroadcast(service: service);
-  }
-
-  void loginOnClick(BuildContext context) async {
     await broadcast.ready;
     await broadcast.start();
     emit(ClientState(true));

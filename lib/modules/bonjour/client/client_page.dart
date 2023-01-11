@@ -1,7 +1,10 @@
 import 'package:base_bloc/components/app_button.dart';
 import 'package:base_bloc/components/app_scalford.dart';
+import 'package:base_bloc/components/app_text.dart';
+import 'package:base_bloc/components/appbar_widget.dart';
 import 'package:base_bloc/modules/bonjour/client/client_cubit.dart';
 import 'package:base_bloc/modules/bonjour/client/client_state.dart';
+import 'package:base_bloc/theme/app_styles.dart';
 import 'package:base_bloc/theme/colors.dart';
 import 'package:drag_and_drop_lists/drag_and_drop_lists.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,8 +23,10 @@ class _ClientPageState extends State<ClientPage> {
   @override
   Widget build(BuildContext context) {
     return AppScaffold(
+        appbar: appBarWidget(
+            context: context, title: AppText("CLIENT", style: typoW400)),
         body: Center(
-      child: Column(
+          child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           BlocBuilder<ClientCubit, ClientState>(
