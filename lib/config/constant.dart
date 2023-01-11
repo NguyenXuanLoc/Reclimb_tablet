@@ -28,6 +28,7 @@ class ConstantKey {
   static const PRIVATE = 0;
   static const FRIENDS = 1;
   static const PUBLIC = 2;
+  static const CLIMBER_SERVICE = '_climber-service._tcp';
 }
 
 class MessageKey {

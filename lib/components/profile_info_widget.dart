@@ -1,6 +1,9 @@
 import 'package:base_bloc/data/globals.dart';
 import 'package:base_bloc/data/model/profile_model.dart';
 import 'package:base_bloc/data/model/user_profile_model.dart';
+import 'package:base_bloc/modules/bonjour/client/client_page.dart';
+import 'package:base_bloc/modules/bonjour/server/server_page.dart';
+import 'package:base_bloc/router/router_utils.dart';
 import 'package:base_bloc/theme/app_styles.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -72,7 +75,8 @@ class ProfileInfoWidget extends StatelessWidget {
           SizedBox(height: 10.h),
           Container(color: colorWhite.withOpacity(0.12), height: 1.h),
           _userCountInfoWidget(context),
-          _userActionsWidget(context)
+          _userActionsWidget(context),
+          _bonjourService(context)
         ],
       ),
     );
@@ -162,6 +166,59 @@ class ProfileInfoWidget extends StatelessWidget {
                     fontSize: 14.w,
                     fontWeight: FontWeight.w400)),
           )),
+    );
+  }
+  Widget _bonjourService(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.only(
+              top: 2 * contentPadding,
+              left: 2 * contentPadding,
+              right: 2 * contentPadding),
+          child: TextButton(
+              style: TextButton.styleFrom(
+                primary: colorMainText,
+                onSurface: colorMainBackground,
+                side: BorderSide(color: colorMainText, width: 1.w),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25.w))),
+              ),
+              onPressed: () =>
+                  RouterUtils.openNewPage(const ClientPage(), context),
+              child: Padding(
+                padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                child: Text("CLIENT",
+                    style: googleFont.copyWith(
+                        color: colorMainText,
+                        fontSize: 14.w,
+                        fontWeight: FontWeight.w400)),
+              )),
+        ),
+        Container(
+          padding: EdgeInsets.only(
+              top: 2 * contentPadding,
+              left: 2 * contentPadding,
+              right: 2 * contentPadding),
+          child: TextButton(
+              style: TextButton.styleFrom(
+                primary: colorMainText,
+                onSurface: colorMainBackground,
+                side: BorderSide(color: colorMainText, width: 1.w),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25.w))),
+              ),
+              onPressed: () => RouterUtils.openNewPage(ServerPage(), context),
+              child: Padding(
+                padding: EdgeInsets.only(left: 10.w, right: 10.w),
+                child: Text("SERVER",
+                    style: googleFont.copyWith(
+                        color: colorMainText,
+                        fontSize: 14.w,
+                        fontWeight: FontWeight.w400)),
+              )),
+        )
+      ],
     );
   }
 }
