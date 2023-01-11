@@ -74,7 +74,8 @@ class _ServerPageState extends State<ServerPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  AppText(state.lUser[i].lastName ?? '',
+                  AppText(
+                      "${state.lUser[i].lastName ?? ''} (${state.lDevice[i].deviceName})",
                       style: typoW400.copyWith()),
                   ListView.separated(
                       padding: const EdgeInsets.only(right: 20),

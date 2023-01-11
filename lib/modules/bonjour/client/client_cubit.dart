@@ -32,7 +32,9 @@ class ClientCubit extends Cubit<ClientState> {
   }
 
   void logoutOnClick(BuildContext context) async {
-    await broadcast.stop();
-    emit(ClientState(false));
+    try {
+      await broadcast.stop();
+      emit(ClientState(false));
+    } catch (ex) {}
   }
 }
