@@ -2,16 +2,27 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:base_bloc/utils/log_utils.dart';
 import 'package:base_bloc/utils/toast_utils.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter_nearby_connections/flutter_nearby_connections.dart';
 
 enum DeviceType { advertiser, browser }
-
 class AppNearbyService {
-  final DeviceType deviceType;
-
+  final DeviceType deviceType =DeviceType.browser;
+/*
   AppNearbyService(this.deviceType) {
+    init();
+  }
+*/
+
+  static AppNearbyService instance = AppNearbyService._init();
+
+  factory AppNearbyService() {
+    return instance;
+  }
+
+  AppNearbyService._init() {
     init();
   }
 
@@ -43,6 +54,7 @@ class AppNearbyService {
               await nearbyService.stopBrowsingForPeers();
               await Future.delayed(const Duration(microseconds: 200));
               await nearbyService.startBrowsingForPeers();
+              logE("TAG BROWSER");
             } else {
               await nearbyService.stopAdvertisingPeer();
               await nearbyService.stopBrowsingForPeers();
@@ -92,8 +104,8 @@ class AppNearbyService {
     });
   }
 
-  void sentMessage(Device device, String message) {
-    nearbyService.sendMessage(device.deviceId, message);
+  void sentMessage(/*Device device, */String data) {
+    nearbyService.sendMessage(devices[0].deviceId/*device.deviceId*/, data);
   }
 
   startConnect(Device device) {

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:base_bloc/components/dialogs.dart';
@@ -6,6 +7,8 @@ import 'package:base_bloc/config/constant.dart';
 import 'package:base_bloc/data/eventbus/refresh_event.dart';
 import 'package:base_bloc/data/globals.dart' as globals;
 import 'package:base_bloc/data/model/playlist_model.dart';
+import 'package:base_bloc/data/nearby/data_event.dart';
+import 'package:base_bloc/data/nearby/playlist_event.dart';
 import 'package:base_bloc/data/repository/user_repository.dart';
 import 'package:base_bloc/modules/create_info_route/create_info_route_page.dart';
 import 'package:base_bloc/modules/create_routes/create_routes_page.dart';
@@ -17,6 +20,7 @@ import 'package:base_bloc/utils/log_utils.dart';
 import 'package:base_bloc/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../data/app_nearby_service.dart';
 import '../../data/model/routes_model.dart';
 import '../../router/router.dart';
 import '../../utils/storage_utils.dart';
@@ -36,7 +40,7 @@ enum ItemAction {
 
 class PlayListCubit extends Cubit<PlaylistState> {
   var userRepository = UserRepository();
-
+  var appNearService = AppNearbyService();
   PlayListCubit() : super(PlaylistState()) {
     checkPlaylistId();
   }
@@ -214,6 +218,10 @@ class PlayListCubit extends Cubit<PlaylistState> {
     try {
       if (response.data != null && response.error == null) {
         var lResponse = routeModelFromJson(response.data['routes']);
+        appNearService.sentMessage(jsonEncode(
+            SentEvent("playlist", PlaylistEvent("success", lResponse))));
+        logE(
+            "TAG DATA test: ${jsonEncode(SentEvent("playlist", PlaylistEvent("success", lResponse)))}");
         emit(state.copyWith(
             status: FeedStatus.success,
             isReadEnd: lResponse.isEmpty,

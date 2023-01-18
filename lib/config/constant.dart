@@ -65,6 +65,10 @@ class ApiKey {
   static const favorite_route_grade = "favorite_route_grade";
   static const photo = "photo";
   static const phone = "phone";
+  static const loading = "loading";
+  static const success = "success";
+  static const error = "error";
+  static const paging = "paging";
 }
 
 class BottomNavigationConstant{

@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   late AppNearbyService appNearbyService;
   @override
   void initState() {
-    appNearbyService = AppNearbyService(DeviceType.browser);
+    appNearbyService = AppNearbyService();
     _newPageStream = Utils.eventBus.on<NewPageEvent>().listen((event) async {
       var result = await RouterUtils.pushTo(context, event.newPage,
           isReplace: event.isReplace);
