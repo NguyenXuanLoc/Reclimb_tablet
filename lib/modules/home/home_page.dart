@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:base_bloc/base/hex_color.dart';
 import 'package:base_bloc/components/app_scalford.dart';
 import 'package:base_bloc/config/constant.dart';
+import 'package:base_bloc/data/app_nearby_service.dart';
 import 'package:base_bloc/data/eventbus/hold_set_event.dart';
 import 'package:base_bloc/data/eventbus/new_page_event.dart';
 import 'package:base_bloc/data/eventbus/switch_tab_event.dart';
@@ -52,9 +53,10 @@ class _HomePageState extends State<HomePage> {
   bool isShowBottomBar = false;
 
   StreamSubscription<NewPageEvent>? _newPageStream;
-
+  late AppNearbyService appNearbyService;
   @override
   void initState() {
+    appNearbyService = AppNearbyService(DeviceType.browser);
     _newPageStream = Utils.eventBus.on<NewPageEvent>().listen((event) async {
       var result = await RouterUtils.pushTo(context, event.newPage,
           isReplace: event.isReplace);
@@ -83,6 +85,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
+    appNearbyService.stop();
     _pageController.dispose();
     _bloc.close();
     _newPageStream?.cancel();
