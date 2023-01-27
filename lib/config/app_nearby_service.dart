@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:base_bloc/data/nearby/nearby_data.dart';
 import 'package:base_bloc/utils/log_utils.dart';
 import 'package:base_bloc/utils/toast_utils.dart';
 import 'package:device_info/device_info.dart';
@@ -65,7 +66,6 @@ class AppNearbyService {
           }
         });
     stateChange();
-    receivedStream();
   }
 
   bool isFirstConnect = false;
@@ -96,16 +96,14 @@ class AppNearbyService {
         });
   }
 
-  void receivedStream() {
-    receivedDataSubscription =
-        nearbyService.dataReceivedSubscription(callback: (data) {
-      print("dataReceivedSubscription: ${jsonEncode(data)}");
-      toast(jsonEncode(data));
-    });
+  void receivedStream(Function(dynamic) callback) {
+    receivedDataSubscription = nearbyService.dataReceivedSubscription(
+        callback: (data) => callback.call(data));
   }
 
-  void sentMessage(/*Device device, */String data) {
-    nearbyService.sendMessage(devices[0].deviceId/*device.deviceId*/, data);
+  void sentMessage(/*Device device, */ NearbyData data) {
+    nearbyService.sendMessage(
+        devices[0].deviceId /*device.deviceId*/, jsonEncode(data));
   }
 
   startConnect(Device device) {

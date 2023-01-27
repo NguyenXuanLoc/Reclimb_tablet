@@ -7,11 +7,6 @@ import 'package:base_bloc/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../modules/home/home_page.dart';
-import '../modules/tab_profile/edit_settings/edit_settings_state.dart';
-import '../router/router_utils.dart';
-import '../utils/storage_utils.dart';
-import '../utils/toast_utils.dart';
 import 'app_text.dart';
 
 class Dialogs {
@@ -48,7 +43,8 @@ class Dialogs {
             .pop());
   }
 
-  static Future<void>? showWidgetDialog(BuildContext context,{required VoidCallback callback,String? text}) {
+  static Future<void>? showWidgetDialog(BuildContext context,
+      {required VoidCallback callback, String? text}) {
     return showDialog<void>(
         context: context,
         barrierColor: colorBlack.withOpacity(0.85),
@@ -65,7 +61,7 @@ class Dialogs {
                     AppText(
                       text!,
                       style:
-                      typoW600.copyWith(color: colorWhite, fontSize: 18.sp),
+                          typoW600.copyWith(color: colorWhite, fontSize: 18.sp),
                     ),
                     SizedBox(
                       height: 10.h,
@@ -78,13 +74,14 @@ class Dialogs {
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(18),
                                 gradient:
-                                Utils.backgroundGradientOrangeButton()),
+                                    Utils.backgroundGradientOrangeButton()),
                             onTap: callback,
                             widget: Center(
                                 child: AppText(
-                                  'Yes',
-                                  style: typoW600.copyWith(color: colorBlack,fontSize: 15.sp),
-                                )),
+                              'Yes',
+                              style: typoW600.copyWith(
+                                  color: colorBlack, fontSize: 15.sp),
+                            )),
                             borderRadius: BorderRadius.circular(18)),
                         SizedBox(
                           width: 20.w,
@@ -111,8 +108,8 @@ class Dialogs {
         });
   }
 
-
-  static Future<void>? showLogOutDiaLog(BuildContext context,{required VoidCallback callback}) {
+  static Future<void>? showLogOutDiaLog(BuildContext context,
+      {required VoidCallback callback}) {
     return showDialog<void>(
         context: context,
         barrierColor: colorBlack.withOpacity(0.85),
@@ -147,7 +144,8 @@ class Dialogs {
                             widget: Center(
                                 child: AppText(
                               'Yes',
-                              style: typoW600.copyWith(color: colorBlack,fontSize: 15.sp),
+                              style: typoW600.copyWith(
+                                  color: colorBlack, fontSize: 15.sp),
                             )),
                             borderRadius: BorderRadius.circular(18)),
                         SizedBox(
@@ -187,7 +185,7 @@ class Dialogs {
             child: SimpleDialog(
               key: _keyLoader,
               backgroundColor: Colors.transparent,
-              children:  <Widget>[
+              children: <Widget>[
                 LoginDialog(loginOnClick: () async {
                   await Dialogs.hideLoadingDialog();
                   loginOnClick.call();

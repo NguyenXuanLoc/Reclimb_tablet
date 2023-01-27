@@ -1,6 +1,6 @@
+/*
 import 'dart:math';
 
-import 'package:base_bloc/data/model/places_model.dart';
 import 'package:base_bloc/utils/log_utils.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -106,3 +106,4 @@ class PlaceField {
   static const String lat = 'lat';
   static const String lng = 'lng';
 }
+*/

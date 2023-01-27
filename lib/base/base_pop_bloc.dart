@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import '../data/app_nearby_service.dart';
+import '../config/app_nearby_service.dart';
 import './bloc.dart';
 
 class BasePopBloc extends Bloc<BasePopEvent, PopState> {

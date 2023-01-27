@@ -4,33 +4,10 @@ import 'dart:math';
 import 'package:base_bloc/base/hex_color.dart';
 import 'package:base_bloc/config/constant.dart';
 import 'package:base_bloc/data/model/background_param.dart';
-import 'package:base_bloc/data/model/general_action_sheet_model.dart';
-import 'package:base_bloc/data/model/info_route_model.dart';
-import 'package:base_bloc/data/repository/user_repository.dart';
-import 'package:base_bloc/utils/log_utils.dart';
-import 'package:base_bloc/utils/toast_utils.dart';
 import 'package:easy_localization/easy_localization.dart';
-
 import 'package:event_bus/event_bus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:matrix2d/matrix2d.dart';
-import '../components/app_text.dart';
-import '../components/dialogs.dart';
-import '../components/sort_widget.dart';
-import '../components/visibility_route_widget.dart';
-import '../data/globals.dart';
-import '../data/model/hold_set_model.dart';
-import '../data/model/holds_param.dart';
-import '../data/model/routes_model.dart';
-import '../data/model/sort_param.dart';
-import '../data/repository/api_result.dart';
-import '../gen/assets.gen.dart';
-import '../localization/locale_keys.dart';
-import '../modules/playlist/playlist_cubit.dart';
-import '../theme/app_styles.dart';
-import '../theme/colors.dart';
 
 class Utils {
   static var METHOD_CHANNEL = "METHOD_CALL_NATIVE";
@@ -73,20 +50,6 @@ class Utils {
       return false;
     }
     return true;
-  }
-
-  static void showSortDialog(BuildContext context, Function(SortParam) callBack,
-      SortParam? sortModel) {
-    showModalBottomSheet(
-      isScrollControlled: true,
-      backgroundColor: colorTransparent,
-      context: context,
-      builder: (x) =>
-          SortWidget(
-            callBack: (model) => callBack.call(model),
-            model: sortModel,
-          ),
-    );
   }
 
   static BackgroundParam getBackgroundColor(int value) {
@@ -359,8 +322,6 @@ class Utils {
     return regExp.hasMatch(value);
   }
 
-
-
   static String convertTimeToDDMMHH(DateTime? time) {
     if (time == null) return '';
     var result = DateFormat('dd-MM-yyyy').format(time);
@@ -444,139 +405,6 @@ class Utils {
 
   static String randomTag() => Random().nextInt(100).toString();
 
-  static void showActionDialog(
-      BuildContext context, Function(ItemAction) callBack,
-      {bool isPlaylist = false,
-      bool checkPlaylists = false,
-      bool isFavorite = false,
-      bool isCopy = true,
-      bool isDesigned = false,
-      bool? isSearchRoute = false,
-      RoutesModel? model}) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (x) => Wrap(
-              children: [
-                Container(
-                  padding: EdgeInsets.all(contentPadding),
-                  decoration: BoxDecoration(
-                    color: colorShowActionDialog,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 70.w,
-                        height: 2.h,
-                        color: colorWhite,
-                      ),
-                      SizedBox(height: contentPadding),
-                      !isDesigned && !isFavorite && !isSearchRoute!
-                          ? itemAction(
-                              Assets.svg.moveToTop,
-                              LocaleKeys.moveToPlaylist.tr(),
-                              ItemAction.MOVE_TO_TOP,
-                              () => callBack.call(ItemAction.MOVE_TO_TOP))
-                          : const SizedBox(),
-                      checkPlaylists &&
-                              !isPlaylist &&
-                              !((model?.playlistIn ?? false))
-                          ? itemAction(
-                              Assets.svg.addToPlayList,
-                              LocaleKeys.addToPlaylist.tr(),
-                              ItemAction.ADD_TO_PLAYLIST,
-                              () => callBack.call(ItemAction.ADD_TO_PLAYLIST))
-                          : const SizedBox(),
-                      !isDesigned && (model?.playlistIn ?? false)
-                          ? itemAction(
-                              Assets.svg.removeFromPlaylist,
-                              LocaleKeys.removeFromPlaylist.tr(),
-                              ItemAction.REMOVE_FROM_PLAYLIST,
-                              () => callBack
-                                  .call(ItemAction.REMOVE_FROM_PLAYLIST))
-                          : const SizedBox(),
-                      !isFavorite && (!(model?.favouriteIn ?? false))
-                          ? itemAction(
-                              Assets.svg.liked,
-                              LocaleKeys.addToFavourite.tr(),
-                              ItemAction.ADD_TO_FAVOURITE,
-                              () => callBack.call(ItemAction.ADD_TO_FAVOURITE))
-                          : const SizedBox(),
-                      !isDesigned && ((model?.favouriteIn ?? true))
-                          ? itemAction(
-                              Assets.svg.like,
-                              LocaleKeys.removeFromFavorite.tr(),
-                              ItemAction.REMOVE_FROM_FAVORITE,
-                              () => callBack
-                                  .call(ItemAction.REMOVE_FROM_FAVORITE))
-                          : const SizedBox(),
-                      !isSearchRoute! ? itemAction(
-                          Assets.svg.share,
-                          LocaleKeys.share.tr(),
-                          ItemAction.SHARE,
-                          () => callBack.call(ItemAction.SHARE)):const SizedBox(),
-                      isCopy && !isSearchRoute
-                          ? itemAction(
-                              Assets.svg.copy,
-                              LocaleKeys.copy.tr(),
-                              ItemAction.COPY,
-                              () => callBack.call(ItemAction.COPY))
-                          : const SizedBox(),
-                      (!isPlaylist && !isFavorite && !isSearchRoute)
-                          ? itemAction(
-                              Assets.svg.edit,
-                              LocaleKeys.edit.tr(),
-                              ItemAction.EDIT,
-                              () => callBack.call(ItemAction.EDIT))
-                          : const SizedBox(),
-                      (!isPlaylist && !isFavorite && !isSearchRoute)
-                          ? itemAction(
-                              Assets.svg.delete,
-                              LocaleKeys.delete.tr(),
-                              ItemAction.DELETE,
-                              () => callBack.call(ItemAction.DELETE))
-                          : const SizedBox()
-                    ],
-                  ),
-                )
-              ],
-            ));
-  }
-
-  static Widget itemAction(String icon, String text, ItemAction action,
-      VoidCallback filterCallBack) {
-    return InkWell(
-      child: Padding(
-        padding: EdgeInsets.all(contentPadding),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 18.w,
-              height: 18.w,
-              child: SvgPicture.asset(icon),
-            ),
-            SizedBox(
-              width: 40.w,
-            ),
-            AppText(
-              text,
-              style: typoW400.copyWith(
-                  fontSize: 16,
-                  color: colorText0.withOpacity(
-                      0.87)) /*typoSuperSmallTextRegular.copyWith(color: colorText0)*/,
-            )
-          ],
-        ),
-      ),
-      onTap: () => filterCallBack.call(),
-    );
-  }
-
   static String convertDateToYYYYMMDD(DateTime dateTime) =>
       DateFormat('yyyy-MM-dd').format(dateTime);
 
@@ -600,40 +428,6 @@ class Utils {
             HexColor('FF5A00'),
           ]);
 
-  static List<HoldParam> getHoldsParam(List<HoldSetModel> lRoutes, int row,
-      int column) {
-    var lHolds = <HoldParam>[];
-    var lRequest = [lRoutes].reshape(row, column);
-    for (int x = 0; x < lRequest.length; x++) {
-      for (int y = 0; y < lRequest[x].length; y++) {
-        if (lRequest[x][y].fileName != null) {
-          var direction = '';
-          switch (lRequest[x][y].rotate) {
-            case 0:
-            case 4:
-            case -4:
-              direction = 'N'; //TREN
-              break;
-            case 1:
-            case -1:
-              direction = 'E'; // TRAI
-              break;
-            case 2:
-            case -2:
-              direction = 'S'; // DUOI
-              break;
-            case 3:
-            case -3:
-              direction = 'M'; // PHAI
-              break;
-          }
-          lHolds.add(HoldParam(y, x, lRequest[x][y].id ?? 0, direction));
-        }
-      }
-    }
-    return lHolds;
-  }
-
   static int getPosition(x, y, width) {
     x += 1;
     y += 1;
@@ -642,21 +436,6 @@ class Utils {
 
   static String getUrlHoldSet(int id) =>
       "${ConstantKey.BASE_URL}hold/${id}/image";
-
-  static List<HoldParam> getHold(dynamic holds) {
-    try {
-      var lResponse =
-      holdParamFromJson(json.decode((holds).replaceAll("'", "\"")));
-      for (int i = 0; i < lResponse.length; i++) {
-        lResponse[i].index = getPosition(lResponse[i].x, lResponse[i].y, 12);
-        lResponse[i].imageUrl ='${ConstantKey.BASE_URL}hold/${lResponse[i].hid}/image';
-        lResponse[i].rotate = getRotateByDirection(lResponse[i].d);
-      }
-      return lResponse;
-    } catch (ex) {
-      return [];
-    }
-  }
 
   static int getRotateByDirection(String value) {
     switch (value) {
@@ -671,121 +450,5 @@ class Utils {
       default:
         return 0;
     }
-  }
-
-  static Future<RoutesModel?> saveDraft(
-      {required BuildContext context,
-      required InfoRouteModel infoRouteModel,
-      required List<HoldSetModel> lHoldSet,
-      required int row,
-      required int column,
-      required bool isEdit,
-      RoutesModel? routeModel}) async {
-    var userRepository =UserRepository();
-    var lHold = getHoldsParam(lHoldSet, row, column);
-    if (lHold.isEmpty) {
-      toast(LocaleKeys.please_input_hold_set.tr());
-      return null;
-    }
-    Dialogs.showLoadingDialog(context);
-    var response = !isEdit
-        ? await userRepository.createRoute(
-            visibility: infoRouteModel.type == VisibilityType.PRIVATE
-                ? ConstantKey.PRIVATE
-                : (infoRouteModel.type == VisibilityType.FRIENDS
-                    ? ConstantKey.FRIENDS
-                    : ConstantKey.PUBLIC),
-            height: infoRouteModel.height,
-            published: false,
-            name: infoRouteModel.routeName,
-            lHold: lHold,
-            hasCorner: infoRouteModel.isCorner,
-            authorGrade: infoRouteModel.grade)
-        : await userRepository.editRoute(
-            routeId: routeModel?.id ?? '',
-            visibility: infoRouteModel.type == VisibilityType.PRIVATE
-                ? ConstantKey.PRIVATE
-                : (infoRouteModel.type == VisibilityType.FRIENDS
-                    ? ConstantKey.FRIENDS
-                    : ConstantKey.PUBLIC),
-            height: infoRouteModel.height,
-            published: false,
-            name: infoRouteModel.routeName,
-            lHold: lHold,
-            hasCorner: infoRouteModel.isCorner,
-            authorGrade: infoRouteModel.grade);
-    await Dialogs.hideLoadingDialog();
-    if (response.data != null && response.error == null) {
-      return RoutesModel.fromJson(response.data);
-    } else {
-      toast(response.error.toString());
-      return null;
-    }
-  }
-}
-
-// Custom dialog action sheet for Settings screen
-class UtilsExtension extends Utils {
-  static void showGeneralOptionActionDialog(
-      BuildContext context,
-      List<GeneralActionSheetModel> actionSheetModels,
-      Function(GeneralActionSheetModel) callBack) {
-    showModalBottomSheet(
-        isScrollControlled: true,
-        backgroundColor: Colors.transparent,
-        context: context,
-        builder: (x) => Wrap(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF212121),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: contentPadding,
-                      ),
-                      ...actionSheetModels.map((item) =>
-                          generalItemAction(item.icon, item.value, () {
-                            callBack.call(item);
-                            Navigator.pop(context);
-                          })),
-                      SizedBox(
-                        height: 40.h,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ));
-  }
-
-  static Widget generalItemAction(
-      Image? icon, String text, VoidCallback callback) {
-    return InkWell(
-      child: Padding(
-        padding: EdgeInsets.all(contentPadding),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 7.h,
-            ),
-            if (icon != null) icon,
-            SizedBox(
-              width: 20.h,
-            ),
-            AppText(
-              text,
-              style: typoNormalTextRegular.copyWith(color: Colors.white70),
-            )
-          ],
-        ),
-      ),
-      onTap: () => callback.call(),
-    );
   }
 }

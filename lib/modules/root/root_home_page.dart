@@ -21,7 +21,7 @@ class _RootHomePageState extends State<RootHomePage> {
 
   void configRouter() {
     var router = FluroRouter();
-    HomeRouters.configureMainRoutes(router);
+    // HomeRouters.configureMainRoutes(router);
     Application.homeRouter = router;
   }
 
