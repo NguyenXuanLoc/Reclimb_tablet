@@ -20,8 +20,12 @@ import 'package:base_bloc/utils/log_utils.dart';
 import 'package:base_bloc/utils/toast_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../base/base_cubit.dart';
+import '../../base/base_pop_bloc.dart';
 import '../../data/app_nearby_service.dart';
 import '../../data/model/routes_model.dart';
+import '../../data/nearby/nearby_data.dart';
+import '../../data/nearby/nearby_ext.dart';
 import '../../router/router.dart';
 import '../../utils/storage_utils.dart';
 import '../routers_detail/routes_detail_page.dart';
@@ -38,9 +42,8 @@ enum ItemAction {
   DELETE
 }
 
-class PlayListCubit extends Cubit<PlaylistState> {
+class PlayListCubit extends BaseCubit<PlaylistState> {
   var userRepository = UserRepository();
-  var appNearService = AppNearbyService();
   PlayListCubit() : super(PlaylistState()) {
     checkPlaylistId();
   }
@@ -218,6 +221,8 @@ class PlayListCubit extends Cubit<PlaylistState> {
     try {
       if (response.data != null && response.error == null) {
         var lResponse = routeModelFromJson(response.data['routes']);
+        var model = NearbyData(nearbyType: NearbyType.Login, data: lResponse);
+        logE("TAG  jsonEncode(model): ${jsonEncode(model)}");
         appNearService.sentMessage(jsonEncode(
             SentEvent("playlist", PlaylistEvent("success", lResponse))));
         logE(

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import '../data/app_nearby_service.dart';
 import './bloc.dart';
 
 class BasePopBloc extends Bloc<BasePopEvent, PopState> {
@@ -7,8 +8,8 @@ class BasePopBloc extends Bloc<BasePopEvent, PopState> {
 
   @override
   Stream<PopState> mapEventToState(
-      BasePopEvent event,
-      ) async* {
+    BasePopEvent event,
+  ) async* {
     if (event is BackEvent) {
       yield BackBasePopState();
     }
