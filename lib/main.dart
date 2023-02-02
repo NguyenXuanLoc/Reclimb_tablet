@@ -69,6 +69,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     StorageUtils.getLanguageCode(context);
     return ScreenUtilInit(
+      designSize: const Size(810, 1080),
       builder: (c, w) => MaterialApp(
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,11 +10,11 @@ class AppCircleLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 24.w,
-      height: 24.h,
+      width: 30.w,
+      height: 30.h,
       child: const CircularProgressIndicator(
         color: colorOrange110,
-        strokeWidth: 4.0,
+        strokeWidth: 2.0,
       ),
     );
   }

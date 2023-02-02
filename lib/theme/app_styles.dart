@@ -223,6 +223,8 @@ final boxShadowSelectBox = [
   ),
 ]; //ád
 final googleFont = GoogleFonts.nunito(letterSpacing: 0.3, color: colorMainText);
+final typoW300 = GoogleFonts.nunito(
+    letterSpacing: 0.3, color: colorMainText, fontWeight: FontWeight.w300);
 final typoW400 = GoogleFonts.nunito(
     letterSpacing: 0.3, color: colorMainText, fontWeight: FontWeight.w400);
 final typoW500 = GoogleFonts.nunito(

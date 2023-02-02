@@ -14,10 +14,9 @@ class AppNotDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: AppText(
-        message ?? LocaleKeys.not_data.tr(),
-        style: typoSmallTextRegular.copyWith(color: colorText0.withOpacity(0.87)),
-      ),
-    );
+        child: AppText(
+      message ?? LocaleKeys.not_data.tr(),
+      style: typoSmallTextRegular.copyWith(color: colorText0.withOpacity(0.87)),
+    ));
   }
 }

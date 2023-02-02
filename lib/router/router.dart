@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 class Routers {
   static String root = "/";
   static String home = "/home";
+  static String pairing = '/pairing';
   static String video = '/video';
 
   static void configureRoutes(FluroRouter router) {
@@ -15,5 +16,6 @@ class Routers {
     });
     router.define(root, handler: routeSplash);
     router.define(home, handler: routeHome);
+    router.define(pairing, handler: routePairing);
   }
 }

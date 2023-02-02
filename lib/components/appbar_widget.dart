@@ -45,59 +45,64 @@ PreferredSizeWidget appBarWidget(
             titleStr ?? '',
             style: typoW600.copyWith(
                 fontWeight: FontWeight.w600,
-                fontSize: 20.sp,
+                fontSize: 22.sp,
                 color: colorText0.withOpacity(0.87)),
           ),
       backgroundColor: backgroundColor ?? colorBlack,
       actions: action,
     );
 
-PreferredSizeWidget homeAppbar(BuildContext context, {required Function onClickSearch, required Function onClickNotification, required Function onClickJumpToTop,required Widget widget}) => appBarWidget(
-    leading: const SizedBox(),
-    backgroundColor: colorMainBackground,
-    leadingWidth: contentPadding,
-    context: context,
-    title: InkWell(
-      splashColor: colorTransparent,
-      highlightColor: colorTransparent,
-      onTap: () => onClickJumpToTop(),
-      child: widget
-      // SvgPicture.asset(
-      //   Assets.svg.relimbDark,
-      //   height: 24.w,
-      // ),
-    ),
-    action: [
-      IconButton(
-        onPressed: () => onClickSearch(), // _bloc.searchOnclick(context),
-        icon: SvgPicture.asset(
-          Assets.svg.search,
-          color: colorSubText,
-        ),
-      ),
-      InkWell(
-        child: Container(
-          margin: EdgeInsets.only(left: 10.w,right: contentPadding),
-          child: Badge(
-            gradient: LinearGradient(colors: [
-              colorYellow70,
-              colorPrimary,
-              colorPrimary.withOpacity(0.65),
-            ]),
-            padding: const EdgeInsets.all(2),
-            position: BadgePosition.topEnd(top: 11.h, end: 3.h),
-            toAnimate: false,
-            badgeContent: AppText(
-              ' ',
-              style: typoSmallTextRegular.copyWith(
-                  fontSize: 9.sp, color: colorWhite),
+PreferredSizeWidget homeAppbar(BuildContext context,
+        {required Function onClickSearch,
+        required Function onClickNotification,
+        required Function onClickJumpToTop,
+        required Widget widget}) =>
+    appBarWidget(
+        leading: const SizedBox(),
+        backgroundColor: colorMainBackground,
+        leadingWidth: contentPadding,
+        context: context,
+        title: InkWell(
+            splashColor: colorTransparent,
+            highlightColor: colorTransparent,
+            onTap: () => onClickJumpToTop(),
+            child: widget
+            // SvgPicture.asset(
+            //   Assets.svg.relimbDark,
+            //   height: 24.w,
+            // ),
             ),
-            child: SvgPicture.asset(
-              Assets.svg.notification,
+        action: [
+          IconButton(
+            onPressed: () => onClickSearch(), // _bloc.searchOnclick(context),
+            icon: SvgPicture.asset(
+              Assets.svg.search,
               color: colorSubText,
             ),
           ),
-        ),
-        onTap: () => onClickNotification(),
-      ),
-    ]);
+          InkWell(
+            child: Container(
+              margin: EdgeInsets.only(left: 10.w, right: contentPadding),
+              child: Badge(
+                gradient: LinearGradient(colors: [
+                  colorYellow70,
+                  colorPrimary,
+                  colorPrimary.withOpacity(0.65),
+                ]),
+                padding: const EdgeInsets.all(2),
+                position: BadgePosition.topEnd(top: 11.h, end: 3.h),
+                toAnimate: false,
+                badgeContent: AppText(
+                  ' ',
+                  style: typoSmallTextRegular.copyWith(
+                      fontSize: 9.sp, color: colorWhite),
+                ),
+                child: SvgPicture.asset(
+                  Assets.svg.notification,
+                  color: colorSubText,
+                ),
+              ),
+            ),
+            onTap: () => onClickNotification(),
+          ),
+        ]);

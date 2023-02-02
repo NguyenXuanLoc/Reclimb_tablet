@@ -1,28 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_nearby_connections/flutter_nearby_connections.dart';
 
-@immutable
-abstract class HomeState extends Equatable {}
+enum StatusType { init, showDialog }
 
-class InitState extends HomeState {
-  @override
-  List<Object?> get props => [];
-}
+class HomeState extends Equatable {
+  final StatusType type;
+  final List<Device> lDevice;
 
-class HideBottomNavigationBarState extends HomeState {
-  final bool isHide;
-
-  HideBottomNavigationBarState(this.isHide);
+  const HomeState({this.type = StatusType.init, this.lDevice = const []});
 
   @override
-  List<Object?> get props => [isHide];
-}
-
-class IndexChangeState extends HomeState {
-  final int index;
-
-  IndexChangeState(this.index);
-
-  @override
-  List<Object?> get props => [index];
+  List<Object?> get props => [StatusType.init, lDevice];
 }

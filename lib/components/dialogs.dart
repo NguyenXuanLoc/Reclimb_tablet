@@ -1,12 +1,16 @@
+import 'package:base_bloc/base/hex_color.dart';
 import 'package:base_bloc/components/app_button.dart';
+import 'package:base_bloc/components/dialog_connect_device.dart';
 import 'package:base_bloc/components/gradient_button.dart';
 import 'package:base_bloc/components/login_dialog.dart';
 import 'package:base_bloc/theme/app_styles.dart';
 import 'package:base_bloc/theme/colors.dart';
 import 'package:base_bloc/utils/app_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_nearby_connections/flutter_nearby_connections.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../config/app_nearby_service.dart';
 import 'app_text.dart';
 
 class Dialogs {
@@ -41,6 +45,27 @@ class Dialogs {
         const Duration(milliseconds: 200),
         () => Navigator.of(_keyLoader.currentContext!, rootNavigator: true)
             .pop());
+  }
+
+  static Future<void>? showInfoDeviceDialog(BuildContext context,
+      {required VoidCallback connectCallBack,
+      required Device device,
+      String? text}) {
+    return showDialog<void>(
+        context: context,
+        barrierColor: colorBlack.withOpacity(0.85),
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return WillPopScope(
+              onWillPop: () async => false,
+              child: AlertDialog(
+                  key: _keyLoader,
+                  backgroundColor: Colors.transparent,
+                  contentPadding: const EdgeInsets.all(0),
+                  content: InfoDeviceDialog(
+                      deviceModel: device,
+                      connectCallBack: () => connectCallBack.call())));
+        });
   }
 
   static Future<void>? showWidgetDialog(BuildContext context,
